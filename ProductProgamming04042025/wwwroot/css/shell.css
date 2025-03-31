@@ -1,0 +1,305 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    --light-blue: #DEE6E7;
+    --blue: #D4DCE3;
+
+    --light-blue-text: #A0AFBD;
+    --blue-text: #008ACF;
+}
+
+a[href] {
+    color: var(--blue-text);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+body>main {
+    background-color: var(--blue);
+}
+
+.user-card-container {
+    padding: 14px;
+}
+
+.user-card {
+    border-radius: 10px;
+    padding: 19px 23px 19px 23px;
+    background-color: var(--light-blue);
+    -webkit-box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.25);
+}
+
+.user-card>.content {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+}
+
+.user-card>.content>.image>img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+}
+
+.user-card>.content>.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 9px;
+    justify-content: center;
+    padding-bottom: 6px;
+}
+
+.user-card>.content>.user-info>.status {
+    color: var(--light-blue-text);
+    font-size: 12px;
+}
+
+.user-card>.content>.user-info>.name {
+    color: black;
+    font-size: 14px;
+}
+
+.user-card>.content>.config {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-card>.content>.config>.gear {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--blue);
+    width: 35px;
+    height: 35px;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(225deg, rgba(255, 255, 255, 0.3) 10%, rgba(0, 0, 0, 0) 100%);
+    border-radius: 50%;
+}
+
+#shell {
+    position: relative;
+}
+
+.hide-shell:hover {
+    appearance: none;
+}
+
+.hide-shell {
+    position: absolute;
+    right: 15px;
+    bottom: 30px;
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    background-color: var(--light-blue);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.hide-shell>img {
+    width: 15px;
+    height: 15px;
+}
+
+#menu {
+    z-index: 10;
+    height: 100vh;
+    background-color: var(--blue);
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: left 0.1s ease;
+}
+
+#shell-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#shell-navigation>.nav-item {
+    color: black;
+    text-decoration: none;
+    padding: 0 14px;
+    border-radius: 5px;
+    font-size: 16px;
+
+}
+
+#shell-navigation>.nav-item:hover>.content {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(222, 230, 231, 0.9) inset;
+    -moz-box-shadow: 0px 0px 15px 0px rgba(222, 230, 231, 0.9) inset;
+    box-shadow: 0px 0px 15px 0px rgba(222, 230, 231, 0.9) inset;
+}
+
+#shell-navigation>.nav-item.selected>.content {
+    background-color: var(--light-blue);
+    width: 100%;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+}
+
+#shell-navigation>.nav-item>.content {
+    gap: 14px;
+    padding: 16px 30px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+#content {
+    height: 400vh;
+    background-color: var(--light-blue);
+}
+
+@media (max-width: 767px) {
+    .mobile {
+        display: block;
+    }
+    #shell{
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+    #mobile-shell .hide-shell{
+        position: static;
+        width: 40px;
+        height: 40px;
+        -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    }
+    #mobile-shell>.content{
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+    #mobile-shell{
+        width: 100%;
+        padding: 9px 15px;
+        background-color: var(--blue);
+    }
+
+    body>main {
+        width: 100%;
+        height: 100%;
+    }
+
+    #menu {
+        height: 100%;
+        width: 100%;
+    }
+
+    #menu.hide {
+        left: -100%;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 1920px) {
+
+    #menu.hide span{
+        width: 100%;
+    }
+    #menu.hide .user-card{
+        background-color: transparent;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+    #menu.hide .user-card,
+    #menu.hide #shell-navigation > .nav-item > .content,
+    #menu.hide .user-card > .content > .user-info{
+        margin: 0;
+        padding: 0;
+    }
+    #menu.hide #shell-navigation > .nav-item > .content{
+        gap: 0;
+        justify-content: center;
+    }
+    #menu.hide{
+        min-width: 71px;
+    }
+
+    #menu.hide .config,
+    #menu.hide span{
+        width: 0;
+        overflow: hidden;
+    }
+
+    #menu.hide .hide-shell{
+        right: 7px;
+    }
+    #menu.hide .hide-shell>img{
+        transform: rotate(180deg);
+    }
+
+}
+@media (min-width: 768px) {
+    .mobile {
+        display: none;
+    }
+    main{
+        display: flex;
+        gap: 15px;
+        width: 100%;
+    }
+    #shell, #menu{
+        position: sticky;
+    }
+    #menu{
+        min-width: 260px;
+        background-color: transparent;
+    }
+
+    #content{
+        padding: 45px 47px;
+        width: 100%;
+        border-top-left-radius: 30px;
+        -webkit-box-shadow: -4px 0px 15px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: -4px 0px 15px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: -4px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media ((min-width: 768px) and (max-width: 1365px)) {
+}
+
+@media ((min-width: 1366px) and (max-width: 1919px)) {
+}
+
+@media (min-width: 1920px) {
+    body {
+        display: flex;
+        justify-content: center;
+        background-color: var(--blue);
+    }
+
+    .hide-shell{
+        display: none;
+    }
+
+    body>main {
+        width: 1920px;
+    }
+}

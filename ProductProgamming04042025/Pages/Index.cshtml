@@ -1,0 +1,70 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "МАКЕТ";
+}
+
+<nav id="shell">
+    <div id="mobile-shell" class="mobile">
+        <div class="content">
+            <div class="hide-shell">
+                <img src="~/images/burger.svg" alt="Меню">
+            </div>
+            <span class="title">
+                Учебный процесс
+            </span>
+        </div>
+    </div>
+    <div id="menu" class="hide">
+        <div class="user-card-container">
+            <div class="user-card">
+                <div class="content">
+                    <div class="image">
+                        <img src="~/images/avatar.svg" alt="Аватар">
+                    </div>
+                    <div class="user-info">
+                        <span class="status">Студент</span>
+                        <span class="name">@Model.UserName</span>
+                    </div>
+                    <div class="config">
+                        <a asp-page="/Config" class="gear">
+                            <!-- Навигация через Tag Helpers -->
+                            <img src="~/images/gear.svg" alt="Настройки">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="shell-navigation">
+            <a asp-page="/Dashboard" class="nav-item">
+                <div class="content">
+                    <div class="icon">
+                        <img src="~/images/calendar.svg" alt="Главная">
+                    </div>
+                    <span class="title">
+                        Главная
+                    </span>
+                </div>
+            </a>
+            <a asp-page="/Dashboard" class="nav-item selected">
+                <div class="content">
+                    <div class="icon">
+                        <img src="~/images/chart.svg" alt="Учебный процесс">
+                    </div>
+                    <span class="title">
+                        Учебный процесс
+                    </span>
+                </div>
+            </a>
+        </div>
+        <button class="hide-shell">
+            <img src="~/images/arrow.svg" alt="Скрыть">
+        </button>
+        
+        <script src="~/js/shell.js"></script>
+
+    </div>
+</nav>
+<section id="content">
+    @Model.ContentText
+</section>
