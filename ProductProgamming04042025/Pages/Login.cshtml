@@ -1,5 +1,5 @@
 ﻿@page
-@model ProductProgamming04042025.Pages.LoginModel
+@model ProductProgamming04042025.Pages.Login
 @{
 }
 
@@ -18,17 +18,17 @@
             <div id="logo">
                 <h1>ServiceName</h1>
             </div>
-            <form id="form" action="">
+            <form id="form" method="post">
                 <label class="input">
                     <span>Логин</span>
-                    <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                    <input asp-for="Input.Login" type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
                 </label>
                 <label class="input">
                     <span>
                         <span>Пароль</span>
                         <a asp-page="/PasswordRecoveryStart">Забыли пароль?</a>
                     </span>
-                    <input type="password" name="password" id="password" placeholder="Введите логин" autocomplete="off" required>
+                    <input asp-for="Input.Password" type="password" name="password" id="password" placeholder="Введите логин" autocomplete="off" required>
                 </label>
                 <div class="form-footer">
                     <button type="submit">Войти</button>
@@ -38,6 +38,6 @@
         </section>
     </main>
     <script src="~/js/toast.js"></script>
-    <script src="~/js/login.js"></script>
+    @* <script src="~/js/login.js"></script> *@
 </body>
 </html>

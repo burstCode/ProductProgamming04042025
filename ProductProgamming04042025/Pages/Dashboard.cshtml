@@ -1,7 +1,7 @@
 ﻿@page
 @model ProductProgamming04042025.Pages.DashboardModel
-@{
-}
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -36,7 +36,7 @@
                             </div>
                             <div class="user-info">
                                 <span class="status">Студент</span>
-                                <span class="name">Игорь Шадров</span>
+                                <span class="name">@await UserManager.GetUserNameAsync(await UserManager.GetUserAsync(User))</span>
                             </div>
                             <div class="config">
                                 <a asp-page="/Config" class="gear">
@@ -74,7 +74,7 @@
             </div>
         </nav>
         <section id="content">
-            123
+            @await UserManager.GetEmailAsync(await UserManager.GetUserAsync(User))
         </section>
     </main>
 
