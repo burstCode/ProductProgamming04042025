@@ -1,0 +1,86 @@
+@import url(./root.css);
+
+
+body {
+    background-color: var(--blue);
+    width: 100%;
+    height: 100vh;
+}
+
+main {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 23px;
+}
+
+#content {
+    padding: 87px 58px 90px;
+    background-color: var(--light-blue);
+    border-top-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+#info>.content {
+    display: grid;
+}
+
+
+#content .small-text {
+    margin-top: 17px;
+    font-size: 16px;
+}
+
+#content .text {
+    margin-top: 8px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#content .info-text {
+    margin-top: 19px;
+}
+
+#content .bold-text {
+    font-weight: 500;
+}
+@media (max-width: 660px) {
+    #logo {
+        display: none;
+    }
+}
+
+
+@media (min-width: 520px) {
+    #content .small-text {
+        margin-top: 0px;
+    }
+    #info>.content{
+        grid-template-columns: max-content auto;
+        gap: 17px;
+    }
+    #info>.content>.at-image{
+        margin-top: 7.5px;
+        grid-column: 1;
+    }
+    #info>.content>.data{
+        grid-column: 2;
+    }
+}
+
+@media (min-width: 660px) {
+    #content {
+        width: 610px;
+        padding: 70px 58px 90px;    
+    }
+
+    #logo{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+}

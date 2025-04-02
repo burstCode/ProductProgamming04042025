@@ -1,0 +1,116 @@
+@import url(../fonts/fontface.css);
+
+:root {
+    --light-blue: #DEE6E7;
+    --blue: #D4DCE3;
+    --light-red: #E7DEDE;
+
+    --light-blue-text: #A0AFBD;
+    --blue-text: #008ACF;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+a[href] {
+    color: var(--blue-text);
+}
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+
+/* элементы форм */
+
+label.input>input[type=password]::placeholder {
+    font-size: 16px;
+}
+
+label.input>input[type=password] {
+    font-size: 11px;
+}
+
+label.input {
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+label.input>span {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 8px;
+    margin-bottom: 10px;
+}
+
+label.input>input::placeholder {
+    color: var(--light-blue-text);
+}
+
+label.input>input {
+    font-size: 16px;
+    padding: 20px;
+    appearance: none;
+    border: none;
+    background-color: #DEE6E7;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+label.input>input.error {
+    background-color: #E7DEDE;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.25);
+    box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.25);
+}
+
+form .split-fields {
+    display: grid;
+    grid-template-columns: 55% 43%;
+    gap: 10px;
+}
+
+.input-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-checkbox>input+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--blue);
+}
+
+.input-checkbox>input:checked+.checkbox {
+    background-color: var(--light-blue);
+}
+
+.input-checkbox>input:checked+.checkbox::after {
+    content: url('../images/check.svg');
+    padding-left: 2px;
+}
+
+@media (max-width: 656px) {
+    .input-checkbox>.text {
+        font-size: 11px;
+        width: min-content;
+    }
+}

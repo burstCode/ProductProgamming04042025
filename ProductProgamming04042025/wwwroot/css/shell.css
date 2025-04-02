@@ -1,16 +1,9 @@
+@import url(./root.css);
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
     font-family: 'Inter', sans-serif;
-}
-
-:root {
-    --light-blue: #DEE6E7;
-    --blue: #D4DCE3;
-
-    --light-blue-text: #A0AFBD;
-    --blue-text: #008ACF;
 }
 
 a[href] {
@@ -226,6 +219,9 @@ body>main {
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
+    }
+    #menu.hide #shell-navigation > .nav-item > .content>.icon{
+        padding: 7px;
     }
     #menu.hide .user-card,
     #menu.hide #shell-navigation > .nav-item > .content,

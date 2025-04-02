@@ -1,0 +1,44 @@
+@import url(./root.css);
+.toast{
+    position: fixed;
+    right: -100%;
+    bottom: 40px;
+    background-color: var(--light-blue);
+    padding: 18px;
+    width: 330px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    transition: 0.5s ease;
+}
+
+.toast.centred.state-1{
+    right: calc(50% - 330px / 2);
+    bottom: 40px;
+}
+.toast.state-1{
+    right: 20px;
+    bottom: 40px;
+}
+
+.toast.centred.state-2{
+    right: calc(50% - 330px / 2);
+    bottom: -100%;
+}
+.toast.state-2{
+    right: 20px;
+    bottom: -100%;
+}
+
+.toast>.content>.text{
+    padding-bottom: 5px;
+}
+.toast>.content{
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 16px;
+}
+
+

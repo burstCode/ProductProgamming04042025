@@ -1,0 +1,39 @@
+@import url(./auth.css);
+
+#content{
+    height: auto;
+    padding-bottom: 40px;
+}
+
+main{
+    height: auto;
+}
+
+@media (max-width: 656px) {
+    #content {
+        height: auto;
+        padding-top: 57px;
+        padding-bottom: 30px;
+    }
+}
+
+@media (max-width: 520px) {
+    form .split-fields{
+        display: flex !important;
+        flex-direction: column;
+        gap: 17px !important;
+    }
+    
+    #form .form-footer{
+        margin-top: 12px;
+    }
+    main{
+        height: auto;
+    }
+    #content{
+        padding-top: 37px;
+    }
+    #form{
+        margin-top: 35px;
+    }
+}

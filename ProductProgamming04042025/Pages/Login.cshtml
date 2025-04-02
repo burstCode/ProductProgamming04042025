@@ -1,0 +1,43 @@
+﻿@page
+@model ProductProgamming04042025.Pages.LoginModel
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/auth.css">
+    <link rel="stylesheet" href="~/css/toast.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <section id="content">
+            <div id="logo">
+                <h1>ServiceName</h1>
+            </div>
+            <form id="form" action="">
+                <label class="input">
+                    <span>Логин</span>
+                    <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                </label>
+                <label class="input">
+                    <span>
+                        <span>Пароль</span>
+                        <a asp-page="/PasswordRecoveryStart">Забыли пароль?</a>
+                    </span>
+                    <input type="password" name="password" id="password" placeholder="Введите логин" autocomplete="off" required>
+                </label>
+                <div class="form-footer">
+                    <button type="submit">Войти</button>
+                    <a asp-page="/Registration">Нет аккаунта? Зарегистрируйтесь!</a>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="~/js/toast.js"></script>
+    <script src="~/js/login.js"></script>
+</body>
+</html>
