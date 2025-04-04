@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./fonts/fontface.css">
     <link rel="stylesheet" href="./css/shell.css">
-    <link rel="stylesheet" href="./css/chat.css">
-    <link rel="stylesheet" href="./css/loader.css">
+    <link rel="stylesheet" href="./css/settings.css">
     <title>МАКЕТ</title>
 </head>
 
@@ -71,39 +70,31 @@
         <section id="content">
             <div class="data">
                 <div class="title">
-                    Чат с ботом
+                    Настройки
                 </div>
-                <div id="chat">
-                    <div class="messages">
-                        <div class="message bot-answer">
-                            <div class="content">
-                                <div class="text">
-                                    Нейросеть генерирует ответ
-                                </div>
-                                <button class="apply-plan">
-                                    <div class="content">
-                                        Применить план
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="message">
-                            <div class="content">
-                                <div class="text">
-                                    ХАЧУ ПА ДРУГОМУ 
-                                </div>
-                            </div>
-                        </div>
+                <div id="settings">
+                    <div class="content">
+                        <form action="">
+                            <label class="input">
+                                <span>Вес</span>
+                                <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                            </label>
+                            <label class="input">
+                                <span>Рост</span>
+                                <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                            </label>
+                            <label class="input">
+                                <span>Возраст</span>
+                                <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                            </label>
+                            <button type="submit">Сохранить</button>
+                        </form>
                     </div>
-                    <form id="chat-form" class="user-input">
-                        <input type="text" placeholder="Введите свой запрос...">
-                        <button type="submit">
-                            <img src="./images/up.svg" alt="">
-                        </button>
-                    </form>
-                </div>
-                <div class="attention">
-                    <span>Ответы генерируются нейросетью, перед началом тренеровок проконсультируйтесь со специалистом</span>
+                    <div class="exit">
+                        <a href="./exit" class="exit-button">
+                            Выход
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -111,19 +102,6 @@
 
     <script src="./js/shell.js"></script>
     <script src="./js/loader.js"></script>
-    <script>
-        const ba = (document.getElementsByClassName('bot-answer')[0]).firstElementChild;
-        const chat_form = document.getElementById('chat-form');
-        
-        const loader = new Loader(ba);
-        chat_form.onsubmit = (e)=>{
-            e.preventDefault();
-            loader.start();
-            setTimeout((e) => {
-                loader.stop();
-            }, 5000);
-        }
-    </script>
 </body>
 
 </html>

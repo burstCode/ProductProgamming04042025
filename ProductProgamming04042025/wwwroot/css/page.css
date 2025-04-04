@@ -1,0 +1,30 @@
+#content .subtext{
+    margin-top: 10px;
+    color: var(--light-blue-text);
+}
+
+#page{
+    margin-top: 20px;
+}
+
+#page>.data{
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+#page>.video>iframe{
+    max-width: 640px;
+    width: 100%;
+}
+#page>.data>.item{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#page>.data>.item>.title{
+    font-size: 24px;
+}
+#page>.data>.item>.body{
+    font-size: 16px;
+}
