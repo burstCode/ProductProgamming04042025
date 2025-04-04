@@ -17,6 +17,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders()
     .AddErrorDescriber<RussianIdentityErrorDescriber>();
 
+builder.Services.AddControllersWithViews(options=>{
+    options.Filters.Add<EmailConfirmedFilter>();
+});
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Login";
