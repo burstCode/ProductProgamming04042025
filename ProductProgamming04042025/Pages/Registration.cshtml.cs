@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
@@ -8,6 +7,7 @@ using System.Text.Encodings.Web;
 
 using ProductProgamming04042025.Pages.Models;
 using ProductProgamming04042025.Pages.Helpers;
+using ProductProgamming04042025.Data;
 
 namespace ProductProgamming04042025.Pages
 {
@@ -16,15 +16,19 @@ namespace ProductProgamming04042025.Pages
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailService _emailService;
 
+        private readonly ApplicationDbContext _context;
+
         [BindProperty]
         public RegistrationModel Input { get; set; }
 
         public Registration(
             UserManager<IdentityUser> userManager,
-            IEmailService emailService)
+            IEmailService emailService,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _emailService = emailService;
+            _context = context;
         }
 
         public void OnGet()
@@ -66,6 +70,24 @@ namespace ProductProgamming04042025.Pages
 
             if (result.Succeeded)
             {
+                // Создаем профиль пользователя
+                var userProfile = new UserProfile
+                {
+                    UserId = user.Id,
+                    User = user,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    Age = 0,
+                    Sex = false,
+                    Height = 0,
+                    Weight = 0,
+                    FitnessGoal = string.Empty
+                };
+
+                // Сохраняем профиль в БД
+                await _context.UserProfiles.AddAsync(userProfile);
+                await _context.SaveChangesAsync();
+
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
