@@ -1,0 +1,22 @@
+.attention {
+    padding-bottom: 10px;
+    padding-left: 8px;
+}
+
+@media (max-width: 656px) {
+    main {
+        height: auto;
+    }
+
+    #content {
+        height: auto;
+        padding-bottom: 30px;
+    }
+}
+
+@media (max-width: 530px) {
+    .fieldset-3{
+        display: flex !important;
+        flex-direction: column;
+    }
+}

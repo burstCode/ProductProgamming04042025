@@ -108,6 +108,23 @@ form .split-fields {
     padding-left: 2px;
 }
 
+.fieldset-3{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+.fieldset-3 input[type=text]{
+    width: 100%;
+}
+
+
+fieldset{
+    border: none;
+    display: flex;
+    gap: 40px;
+}
+
+
 @media (max-width: 656px) {
     .input-checkbox>.text {
         font-size: 11px;
