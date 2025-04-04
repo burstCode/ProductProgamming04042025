@@ -1,0 +1,85 @@
+﻿@page
+@model FirstLoginModel
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/auth.css">
+    <link rel="stylesheet" href="~/css/first-login.css">
+    <link rel="stylesheet" href="~/css/toast.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <main>
+        <section id="content">
+            <div id="logo">
+                <h1>FitMeAI</h1>
+            </div>
+            <form id="form" method="post">
+                <div class="attention">
+                    Для нашей работы нам нужно знать о вас чуть-чуть больше, пожалуйста, укажите данные о себе:
+                </div>
+                <div class="fieldset-3">
+                    <label class="input">
+                        <span>Возраст</span>
+                        <input type="text" asp-for="NewFields.Age" id="age" placeholder="Ваш возраст" autocomplete="off" required>
+                    </label>
+                    <label class="input">
+                        <span>Рост</span>
+                        <input type="text" asp-for="NewFields.Height" id="height" placeholder="Ваш рост" autocomplete="off" required>
+                    </label>
+                    <label class="input">
+                        <span>Вес</span>
+                        <input type="text" asp-for="NewFields.Weight" id="weight" placeholder="Ваш вес" autocomplete="off" required>
+                    </label>
+                </div>
+                <label class="input">
+                    <span>
+                        Укажите цель тренеровок
+                    </span>
+                    <input type="text" asp-for="FitnessGoal" name="text" id="text" placeholder="Чего вы хотите достичь?" autocomplete="off"
+                           required>
+                </label>
+                <label class="input">
+                    <span>
+                        Укажите свой пол
+                    </span>
+                </label>
+                <fieldset>
+                    <label for="male-sex" class="input-checkbox">
+                        <input type="radio" asp-for="NewFields.Sex" value="true" id="male-sex" hidden>
+                        <span class="checkbox">
+
+                        </span>
+                        <div for="male-sex" class="text">
+                            <div>
+                                Мужской
+                            </div>
+                        </div>
+                    </label>
+                    <label for="female-sex" class="input-checkbox">
+                        <input type="radio" asp-for="NewFields.Sex" value="false" id="female-sex" hidden>
+                        <span class="checkbox">
+
+                        </span>
+                        <div for="female-sex" class="text">
+                            <div>
+                                Женский
+                            </div>
+                        </div>
+                    </label>
+                </fieldset>
+                <div class="form-footer">
+                    <button type="submit">Применить</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="~/js/toast.js"></script>
+    <script src="~/js/login.js"></script>
+</body>
+</html>

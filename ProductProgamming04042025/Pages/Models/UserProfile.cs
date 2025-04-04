@@ -30,7 +30,6 @@ namespace ProductProgamming04042025.Pages.Models
 
         public decimal Weight { get; set; }  // Вес в кг
 
-        [MaxLength(100)]
-        public string FitnessGoal { get; set; }
+        public bool IsConfiguredFirstTime { get; set; }     // Была ли настройка при первом логине
     }
 }

@@ -81,7 +81,7 @@ namespace ProductProgamming04042025.Pages
                     Sex = false,
                     Height = 0,
                     Weight = 0,
-                    FitnessGoal = string.Empty
+                    IsConfiguredFirstTime = false
                 };
 
                 // Сохраняем профиль в БД
