@@ -1,0 +1,59 @@
+#plan {
+    margin-top: 34px;
+}
+
+#plan>.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 53px;
+    justify-content: center;
+}
+
+#plan>.cards>.card {
+    background-color: var(--blue);
+    border-radius: 20px;
+    box-shadow: -4px 4px 15px 0 rgba(0, 0, 0, 0.1);
+    width: 535px;
+    min-height: 438px;
+    padding: 40px;
+}
+#plan>.cards>.card.selected {
+    background-color: #DEE6E7;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.5);
+}
+#plan>.cards>.card>.content>.title {
+    font-size: 24px;
+}
+
+#plan>.cards>.card>.content>.data {
+    margin-top: 20px;
+}
+
+#plan>.cards>.card>.content>.data>.set>.title {
+    font-size: 16px;
+    color: var(--light-blue-text);
+}
+
+#plan>.cards>.card>.content>.data>.set>.items {
+    margin-top: 10px;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+#plan>.cards>.card>.content>.data>.set>.items>.item:first-child {
+    color: var(--light-blue-text);
+}
+
+@media (max-width: 460px) {
+
+    #plan>.cards>.card>.content>.data>.set>.items>.item:first-child>.content {
+        text-align: right;
+    }
+}
+
+#plan>.cards>.card>.content>.data>.set>.items>.item {
+    display: flex;
+    justify-content: space-between;
+
+}

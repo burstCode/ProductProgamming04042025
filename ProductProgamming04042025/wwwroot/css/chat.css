@@ -1,0 +1,105 @@
+#chat{
+    margin-top: 36px;
+}
+
+#chat{
+    background-color: var(--blue);
+    padding: 48px 30px 32px;
+    border-radius: 10px;
+    box-shadow: -4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+
+#chat .messages{
+    display: flex;
+    flex-direction: column;
+}
+#chat .messages > .message{
+    display: flex;
+    justify-content: end;
+}
+#chat .messages > .message.bot-answer{
+    justify-content: start;
+}
+#chat .messages>.message>.content{
+    width: 608px;
+    background-color: var(--light-blue);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    border-radius: 10px;
+    box-shadow: -4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+#chat .messages > .message > .content>.text{
+    width: 100%;
+}
+#chat .messages>.message>.content>.apply-plan{
+    font-size: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    appearance: none;
+    background-color: var(--blue);
+    border: none;
+}
+#chat .user-input{
+    border-radius: 5px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    padding-right: 21px;
+    justify-content: space-between;
+    background-color: var(--light-blue);
+        
+}
+#chat .user-input>input::placeholder{
+    color: var(--light-blue-text);
+}
+#chat .user-input>input:focus{
+    outline: none;
+    border-bottom: 2px solid var(--blue-text);
+}
+#chat .user-input>input{
+    padding-left: 20px;
+    appearance: none;
+    color: black;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    padding: 20px;
+}
+
+
+#chat .user-input>button{
+    width: 30px;
+    box-sizing: content-box;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--blue);
+    box-shadow: -1px 1px 4px 0 rgba(0, 0, 0, 0.25);
+}
+#chat .user-input>button>img{
+    width: 24px;
+    height: 24px;
+}
+
+
+.attention{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    color: var(--light-blue-text);
+    text-align: center;
+}
+
+@media (max-width: 1510px) {
+    #chat .messages{
+        gap: 10px;
+    }
+}

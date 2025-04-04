@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/registration.css">
+    <link rel="stylesheet" href="./css/toast.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <section id="content">
+            <div id="logo">
+                <h1>ServiceName</h1>
+            </div>
+            <form id="form" action="">
+                <div class="split-fields">
+                    <label class="input">
+                        <span>Фамилия</span>
+                        <input type="text" name="firstname" placeholder="Введите свою фамилию" autocomplete="off" required>
+                    </label>
+                    <label class="input">
+                        <span>Имя</span>
+                        <input type="text" name="lastname" placeholder="Введите своё имя" autocomplete="off" required>
+                    </label>
+                </div>
+                <label class="input">
+                    <span>
+                        Логин
+                    </span>
+                    <input type="text" name="login" placeholder="Придумайте логин" autocomplete="off" required>
+                </label>
+                <label class="input">
+                    <span>
+                        Почта
+                    </span>
+                    <input type="email" name="email" placeholder="Введите адрес своей электронной почты" autocomplete="off" required>
+                </label>
+                <label class="input">
+                    <span>
+                        Пароль
+                    </span>
+                    <input type="password" name="password"  placeholder="Придумайте пароль" autocomplete="off" required>
+                </label>
+                <label class="input">
+                    <span>
+                        Подтвердите пароль
+                    </span>
+                    <input type="password" name="password-confirm"  placeholder="Введите пароль ещё раз" autocomplete="off" required>
+                </label>
+                <div class="form-footer">
+                    <label for="privacy" class="input-checkbox">
+                        <input type="checkbox" name="privacy" id="privacy" hidden>
+                        <label for="privacy" class="checkbox">
+
+                        </label>
+                        <div class="text">
+                            <div>
+                                Я соглашаюсь с <a href="./confidence.html">Политикой конфиденциальности</a>
+                            </div>
+                        </div>
+                    </label>
+                    <button type="submit">Зарегистрироваться</button>
+                    <a href="./login.html">Есть аккаунт? Войдите!</a>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="./js/toast.js"></script>
+    <script src="./js/login.js"></script>
+</body>
+</html>
