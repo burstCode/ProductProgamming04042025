@@ -1,5 +1,5 @@
 @page
-
+@model ProductProgamming04042025.Pages.Settings
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
 <!DOCTYPE html>
@@ -38,7 +38,7 @@
                                 <span class="status">Пользователь</span>
                                 <span class="name">@await UserManager.GetUserNameAsync(await UserManager.GetUserAsync(User))</span>
                             </div>
-                            <div class="config"><a href="~/Settings" class="gear">
+                            <div class="config"><a asp-page="/Settings" class="gear">
                                     <img src="./images/gear.svg" alt="C">
                                 </a></div>
                         </div>
@@ -78,26 +78,28 @@
                 </div>
                 <div id="settings">
                     <div class="content">
-                        <form action="">
+                        <form method="post" asp-page-handler="SaveSettings">
                             <label class="input">
                                 <span>Вес</span>
-                                <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                                <input type="text" asp-for="Input.Weight" placeholder="Введите вес" autocomplete="off" required>
                             </label>
                             <label class="input">
                                 <span>Рост</span>
-                                <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                                <input type="text" asp-for="Input.Height" placeholder="Введите рост" autocomplete="off" required>
                             </label>
                             <label class="input">
                                 <span>Возраст</span>
-                                <input type="text" name="login" id="login" placeholder="Введите логин" autocomplete="off" required>
+                                <input type="text" asp-for="Input.Age" placeholder="Введите возраст" autocomplete="off" required>
                             </label>
                             <button type="submit">Сохранить</button>
                         </form>
                     </div>
                     <div class="exit">
-                        <a href="./exit" class="exit-button">
-                            Выход
-                        </a>
+                        <form method="post" asp-page-handler="Logout">
+                            <button type="submit" class="exit-button">
+                                Выход
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
