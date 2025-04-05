@@ -1,15 +1,16 @@
+﻿@page
+@model ProductProgamming04042025.Pages.ChatModel
+
+
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/fonts/fontface.css">
     <link rel="stylesheet" href="~/css/shell.css">
     <link rel="stylesheet" href="~/css/chat.css">
-    <title>МАКЕТ</title>
 </head>
-
 <body>
     <main>
         <nav id="shell">
@@ -32,16 +33,18 @@
                             </div>
                             <div class="user-info">
                                 <span class="status">Пользователь</span>
-                                <span class="name">Игорь Шадров</span>
+                                <span class="name">@Model.UserProfile.FirstName @Model.UserProfile.LastName</span>
                             </div>
-                            <div class="config"><a href="~/config" class="gear">
+                            <div class="config">
+                                <a href="~/config" class="gear">
                                     <img src="~/images/gear.svg" alt="C">
-                                </a></div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div id="shell-navigation">
-                    <a href="/dashboard.html" class="nav-item selected">
+                    <a asp-page="/Chat" class="nav-item selected">
                         <div class="content">
                             <div class="icon">
                                 <img src="~/images/calendar.svg" alt="">
@@ -51,13 +54,13 @@
                             </span>
                         </div>
                     </a>
-                    <a href="/dashboard.html" class="nav-item ">
+                    <a asp-page="/Plan" class="nav-item">
                         <div class="content">
                             <div class="icon">
                                 <img src="~/images/dumbbells.svg" alt="">
                             </div>
                             <span class="title">
-                                План тренеровок
+                                План тренировок
                             </span>
                         </div>
                     </a>
@@ -74,41 +77,50 @@
                 </div>
                 <div id="chat">
                     <div class="messages">
-                        <div class="message bot-answer">
-                            <div class="content">
-                                <div class="text">
-                                    Вот изменённый план.
-                                </div>
-                                <button class="apply-plan">
-                                    <div class="content">
-                                        Применить план
+                        @foreach (var message in Model.Messages)
+                        {
+                            <div class="message @(message.IsBot ? "bot-answer" : "")">
+                                <div class="content">
+                                    <div class="text">
+                                        @message.Text
                                     </div>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="message">
-                            <div class="content">
-                                <div class="text">
-                                    ХАЧУ ПА ДРУГОМУ 
+                                    @if (message.IsBot && message.Plan != null)
+                                    {
+                                        <button class="apply-plan" onclick="applyPlan(@message.Plan.Id)">
+                                            <div class="content">
+                                                Применить план
+                                            </div>
+                                        </button>
+                                    }
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
-                    <form class="user-input">
-                        <input type="text" placeholder="Введите свой запрос...">
+                    <form class="user-input" method="post" asp-page-handler="SendMessage">
+                        <input type="text" name="message" placeholder="Введите свой запрос...">
                         <button type="submit">
                             <img src="~/images/up.svg" alt="">
                         </button>
                     </form>
                 </div>
                 <div class="attention">
-                    <span>Ответы генерируются нейросетью, перед началом тренеровок проконсультируйтесь со специалистом</span>
+                    <span>Ответы генерируются нейросетью, перед началом тренировок проконсультируйтесь со специалистом</span>
                 </div>
             </div>
         </section>
     </main>
 
     <script src="~/js/shell.js"></script>
+    <script>
+        function applyPlan(planId) {
+            fetch(`/api/plan/apply/${planId}`, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/Plan';
+                }
+            });
+        }
+    </script>
 </body>
-
 </html>

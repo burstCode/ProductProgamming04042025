@@ -36,7 +36,7 @@
                             </div>
                             <div class="user-info">
                                 <span class="status">Студент</span>
-                                <span class="name">@await UserManager.GetUserNameAsync(await UserManager.GetUserAsync(User))</span>
+                                <span class="name">@Model.UserProfile.FirstName @Model.UserProfile.LastName</span>
                             </div>
                             <div class="config">
                                 <a asp-page="/Config" class="gear">
