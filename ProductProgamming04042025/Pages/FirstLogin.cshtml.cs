@@ -14,8 +14,6 @@ namespace ProductProgamming04042025.Pages
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public string FitnessGoal { get; set; }
-
         [BindProperty]
         public NewFields NewFields { get; set; }
 
@@ -71,7 +69,7 @@ namespace ProductProgamming04042025.Pages
             _context.UserProfiles.Update(profile);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Dashboard");
+            return RedirectToPage("/Chat", new { FitnessGoal = NewFields.FitnessGoal });
         }
     }
 
@@ -81,5 +79,6 @@ namespace ProductProgamming04042025.Pages
         public decimal Height { get; set; }
         public decimal Weight { get; set; }
         public bool Sex { get; set; }
+        public string FitnessGoal { get; set; }
     }
 }

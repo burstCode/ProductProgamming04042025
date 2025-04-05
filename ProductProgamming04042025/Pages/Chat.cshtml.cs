@@ -24,6 +24,9 @@ namespace ProductProgamming04042025.Pages
         [BindProperty]
         public ChatInputModel Input { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string FitnessGoal { get; set; }
+
         public ChatModel(
             ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
@@ -37,14 +40,22 @@ namespace ProductProgamming04042025.Pages
         public async Task OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            UserProfile = await _context.UserProfiles.
-                FirstOrDefaultAsync(p => p.UserId == user.Id);
+            UserProfile = await _context.UserProfiles
+                .FirstOrDefaultAsync(p => p.UserId == user.Id);
+
+            if ( FitnessGoal != null )
+            {
+                // Если перешли с фитнес-целью, автоматически отправляем запрос
+                Input = new ChatInputModel { Message = FitnessGoal };
+                await OnPostSendMessageAsync();
+                Response.Redirect("/Chat");
+                return;
+            }
 
             // Загрузка истории сообщений
-            List<ChatRecord> records = await _context.ChatRecords
+            var records = await _context.ChatRecords
                 .Where(c => c.UserId == user.Id)
                 .OrderBy(c => c.CreatedAt)
-                .Select(c => c)
                 .ToListAsync();
 
             foreach (var record in records)
@@ -56,7 +67,8 @@ namespace ProductProgamming04042025.Pages
                     Plan = new PlanPreview
                     {
                         Id = record.Id
-                    }
+                    },
+                    IsAnswerReady = record.IsAnswerReady
                 });
                 Messages.Add(new ChatMessage
                 {
@@ -66,19 +78,14 @@ namespace ProductProgamming04042025.Pages
                     {
                         Id = record.Id,
                         IsApplied = record.IsApplied
-                    }
+                    },
+                    IsAnswerReady = record.IsAnswerReady
                 });
             }
         }
 
         public async Task<IActionResult> OnPostSendMessageAsync()
         {
-
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             var user = await _userManager.GetUserAsync(User);
             UserProfile = await _context.UserProfiles.
                 FirstOrDefaultAsync(p => p.UserId == user.Id);
@@ -157,7 +164,7 @@ namespace ProductProgamming04042025.Pages
             newPlan.AppliedDate = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Plan");
+            return RedirectToPage("/Index");
         }
     }
 
@@ -171,6 +178,7 @@ namespace ProductProgamming04042025.Pages
     {
         public string Text { get; set; }
         public bool IsBot { get; set; }
+        public bool IsAnswerReady { get; set; }
         public PlanPreview Plan { get; set; }
     }
 

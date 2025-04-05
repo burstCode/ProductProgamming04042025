@@ -90,7 +90,7 @@
                                             <input type="hidden" name="id" value="@message.Plan.Id" />
                                             <button type="submit"
                                                     class="apply-plan @(message.Plan.IsApplied ? "applied" : "")"
-                                                    @(message.Plan.IsApplied ? "disabled" : "")>
+                                                    @((message.Plan.IsApplied || !message.IsAnswerReady) ? "disabled" : "")>
                                                 <div class="content">
                                                     @(message.Plan.IsApplied ? "✓ Активный план" : "Применить план")
                                                 </div>
