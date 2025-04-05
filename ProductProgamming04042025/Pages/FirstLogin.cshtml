@@ -21,7 +21,7 @@
             </div>
             <form id="form" method="post">
                 <div class="attention">
-                    Для нашей работы нам нужно знать о вас чуть-чуть больше, пожалуйста, укажите данные о себе:
+                    Дорогой @ViewData["uesr_name"], Для нашей работы нам нужно знать о вас чуть-чуть больше, пожалуйста, укажите данные о себе:
                 </div>
                 <div class="fieldset-3">
                     <label class="input">
@@ -49,9 +49,9 @@
                         Укажите свой пол
                     </span>
                 </label>
-                <fieldset>
+                <fieldset va>
                     <label for="male-sex" class="input-checkbox">
-                        <input type="radio" asp-for="NewFields.Sex" value="true" id="male-sex" hidden>
+                        <input type="radio" asp-for="NewFields.Sex" value="true" checked="@ViewData["is_male"]" id="male-sex" hidden>
                         <span class="checkbox">
 
                         </span>
@@ -62,7 +62,7 @@
                         </div>
                     </label>
                     <label for="female-sex" class="input-checkbox">
-                        <input type="radio" asp-for="NewFields.Sex" value="false" id="female-sex" hidden>
+                        <input type="radio" asp-for="NewFields.Sex" value="false" checked="@(!(bool)ViewData["is_male"])" id="female-sex" hidden>
                         <span class="checkbox">
 
                         </span>

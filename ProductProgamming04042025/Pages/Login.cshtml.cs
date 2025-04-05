@@ -55,8 +55,12 @@ namespace ProductProgamming04042025.Pages
                 }
                 // TODO: Можнон добавить переход на страницу, где сказано, что ссылка просрочена
                 // еще и аккаунт снести наху из БД
+          
             }
-
+            Response.Headers.Append(
+                "Content-Security-Policy",
+                "frame-ancestors http://localhost https://oauth.yandex.ru https://yandex.ru 'self'"
+            );
             return Page();
         }
 

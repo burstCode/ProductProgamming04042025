@@ -27,9 +27,15 @@ namespace ProductProgamming04042025.Pages
 
         public async Task OnGetAsync()
         {
-            // Если захотим подставить имя в форме
-            //var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
+            // Загружаем существующий профиль
+            var profile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
+            if (profile != null)
+            {
+                ViewData["uesr_name"] = profile.FirstName + " " + profile.LastName;
+                ViewData["is_male"] = profile.Sex;
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -48,6 +54,7 @@ namespace ProductProgamming04042025.Pages
             {
                 ModelState.AddModelError("UserProfile.Height", "Рост должен быть положительным числом");
             }
+
 
             if (NewFields.Weight <= 0)
             {
