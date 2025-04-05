@@ -64,7 +64,8 @@ namespace ProductProgamming04042025.Pages
                     IsBot = true,
                     Plan = new PlanPreview
                     {
-                        Id = record.Id
+                        Id = record.Id,
+                        IsApplied = record.IsApplied
                     }
                 });
             }
@@ -133,6 +134,31 @@ namespace ProductProgamming04042025.Pages
 
             return RedirectToPage();
         }
+
+        public async Task<IActionResult> OnPostApplyPlanAsync(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            // Деактивация старого плана
+            var previousAppliedPlans = await _context.ChatRecords
+                .Where(p => p.UserId == user.Id && p.IsApplied)
+                .ToListAsync();
+
+            foreach (var plan in previousAppliedPlans)
+            {
+                plan.IsApplied = false;
+            }
+
+            // Установка нового плана
+            var newPlan = await _context.ChatRecords
+                .FirstOrDefaultAsync(p => p.Id == id && p.UserId == user.Id);
+
+            newPlan.IsApplied = true;
+            newPlan.AppliedDate = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Plan");
+        }
     }
 
     public class ChatInputModel
@@ -151,5 +177,6 @@ namespace ProductProgamming04042025.Pages
     public class PlanPreview
     {
         public int Id { get; set; }
+        public bool IsApplied { get; set; } = false;
     }
 }

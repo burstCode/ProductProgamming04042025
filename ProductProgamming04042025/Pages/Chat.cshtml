@@ -86,11 +86,16 @@
                                     </div>
                                     @if (message.IsBot && message.Plan != null)
                                     {
-                                        <button class="apply-plan" onclick="applyPlan(@message.Plan.Id)">
-                                            <div class="content">
-                                                Применить план
-                                            </div>
-                                        </button>
+                                        <form method="post" asp-page-handler="ApplyPlan" class="apply-plan-form">
+                                            <input type="hidden" name="id" value="@message.Plan.Id" />
+                                            <button type="submit"
+                                                    class="apply-plan @(message.Plan.IsApplied ? "applied" : "")"
+                                                    @(message.Plan.IsApplied ? "disabled" : "")>
+                                                <div class="content">
+                                                    @(message.Plan.IsApplied ? "✓ Активный план" : "Применить план")
+                                                </div>
+                                            </button>
+                                        </form>
                                     }
                                 </div>
                             </div>
