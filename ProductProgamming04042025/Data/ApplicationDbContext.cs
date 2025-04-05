@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProductProgamming04042025.Pages.Models;
 
 namespace ProductProgamming04042025.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public DbSet<Article> Articles {get; set;}
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
