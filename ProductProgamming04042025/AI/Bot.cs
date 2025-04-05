@@ -1,36 +1,95 @@
 ﻿using Azure;
 using Azure.AI.Inference;
 using Microsoft.Extensions.AI;
-
 using ProductProgamming04042025.Pages.Models;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using System.Collections;
+using Microsoft.Build.Framework;
+using Org.BouncyCastle.Asn1.Cmp;
+using System.Runtime.InteropServices;
 
 namespace ProductProgamming04042025.AI
 {
     public class Bot
     {
-        // Переменные для доступа к моделям GitHub
-        readonly private AzureKeyCredential _credential;
-        readonly private string _modelName;
+        private readonly AzureKeyCredential _credential;
+        private readonly string _modelName;
+        private readonly Uri _modelEndpoint;
+        private readonly IChatClient _chatClient;
 
-        readonly private Uri _modelEndpoint;
-        readonly private IChatClient _chatClient;
-
-        // Конструктор
         public Bot(string token, string modelName)
         {
             _credential = new(token);
             _modelName = modelName;
-
-            // Этот адрес не изменяется
             _modelEndpoint = new Uri("https://models.inference.ai.azure.com");
-
             _chatClient = new ChatCompletionsClient(_modelEndpoint, _credential)
                 .AsChatClient(_modelName);
         }
 
-        // Отправка запроса к нейросетиa
-        public async Task<FitnessPlan > SendRequest(string request, UserProfile userProfile)
+        public async Task<object[]> SendRequest(string request, UserProfile userProfile)
+        {
+            string textResponse = string.Empty;
+
+            try
+            {
+                string prompt = BuildPrompt(request, userProfile);
+                var response = _chatClient.CompleteStreamingAsync(prompt);
+
+                if (response == null)
+                {
+                    Console.WriteLine("Не получилось получить ответ от нейросети - он равен null");
+                    throw new NullReferenceException("AI response is null");
+                }
+
+                string collectedResponse = await CollectResponse(response);
+                //string jsonAnswer = SanitizeJson(collectedResponse);
+                // Разделяем ответ на текстовую часть и JSON
+                var parts = collectedResponse.Split(new[] { "===JSON===" }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (parts.Length > 0)
+                {
+                    textResponse = parts[0].Trim();
+                }
+
+                string jsonAnswer = parts.Length > 1 ? SanitizeJson(parts[1]) : "{}";
+
+                Console.WriteLine($"Ответ нейросети: {jsonAnswer}");
+
+                var settings = new JsonSerializerSettings
+                {
+                    MissingMemberHandling = MissingMemberHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Ignore,
+                };
+
+                // Временно парсим со string-ключом
+                var rawPlan = JsonConvert.DeserializeObject<Dictionary<string, DayPlan>>(jsonAnswer);
+                
+                if (rawPlan == null)
+                {
+                    Console.WriteLine("Не удбалось десериализовать фитнес-план");
+                    throw new JsonSerializationException("Failed to deserialize fitness plan");
+                }
+
+                // Конвертируем в FitnessPlan
+                var fitnessPlan = new FitnessPlan
+                {
+                    WeekPlan = rawPlan.ToDictionary(
+                        kvp => int.Parse(kvp.Key), // Конвертируем ключ из string в int
+                        kvp => kvp.Value
+                    )
+                };
+
+            return new object[] { textResponse, fitnessPlan };
+        }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message, "Ошибка в SendRequest");
+                throw;
+            }
+        }
+
+        private string BuildPrompt(string request, UserProfile userProfile)
         {
             string prompt =
                 $"Система: Вы - спортивный тренер и диетолог, разрабатывающий план тренировок в совокупности с питанием на неделю. " +
@@ -42,7 +101,9 @@ namespace ProductProgamming04042025.AI
                 $"- Пол: {(userProfile.Sex ? "мужской" : "женский")};\n" +
                 $"- Рост: {userProfile.Height} см;\n" +
                 $"- Вес: {userProfile.Weight} кг.\n" +
-                $"Оформи ответ в формате Json в соответствии со следующим примером:\n" +
+                $"Оформи ответ в следующем формате: сначала сообщение, понятное для пользователя, в html без использования тега html. Для форматирования текста можешь использовать теги: " +
+                $"h2, h3 - для заголовков разного размера, p - для параграфов, ul li ol - для списков, hr для разделения данных, например дней недели. " +
+                $"После сообщения для пользователя установи разделитель с текстом \"===JSON===\", после чего оформи Json в соответствии со следующим примером:\n" +
                 $"\"Номер дня недели (начинай с 0, имеется ввиду, что  0 - это понедельник)\": {{\n" +
                 $"\"exercises\":[\n" +
                 $"                {{\n" +
@@ -58,77 +119,45 @@ namespace ProductProgamming04042025.AI
                 $"\"diet\":[\n" +
                 $"                {{\n" +
                 $"                    \"name\": \"Блюдо 1 (завтрак)\",\n" +
-                $"                    \"count\": \"Калорийность. Белки/жиры/углеводы\"\n" +
+                $"                    \"count\": \"Калорийность. Белки/жиры/углеводы (указать без единиц измерения)\"\n" +
                 $"                }},\n" +
                 $"                {{\n" +
                 $"                    \"name\": \"Блюдо 2 (обед)\"," +
-                $"                    \"count\": \"Калорийность. Белки/жиры/углеводы\"\n" +
+                $"                    \"count\": \"Калорийность. Белки/жиры/углеводы (указать без единиц измерения)\"\n" +
                 $"                }}\n," +
                 $"                {{\n" +
                 $"                    \"name\": \"Блюдо 3 (ужин)\"," +
-                $"                    \"count\": \"Калорийность. Белки/жиры/углеводы\"\n" +
+                $"                    \"count\": \"Калорийность. Белки/жиры/углеводы (указать без единиц измерения)\"\n" +
                 $"                }}\n," +
                 $"            ],\n" +
                 $"        \"extra\": \"exercises или diet могут быть пустыми, если это так, то запиши ответ в это поле\"\n" +
                 $"}}\n" +
-                $"Важно: нужно вернуть без какого-либо форматирования для последующего корректного парсинга.\n" +
                 $"Пользователь: {request}";
 
-            string jsonAnswer;
-
-            // Получение ответа от нейросети
-            IAsyncEnumerable<StreamingChatCompletionUpdate> response = _chatClient.CompleteStreamingAsync(prompt);
-
-            if (response == null)
-            {
-                throw new NullReferenceException("Переменная response приняла значение null, ответ от нейросети получить не удалось");
-            }
-
-            string collectedResponse = await CollectResponse(response);
-
-            // Десериализация в модель 
-            try
-            {
-                jsonAnswer = SanitizeJson(collectedResponse);
-
-                var settings = new JsonSerializerSettings
-                {
-                    MissingMemberHandling = MissingMemberHandling.Ignore,
-                    NullValueHandling = NullValueHandling.Ignore,
-                };
-
-                var plan = JsonConvert.DeserializeObject<FitnessPlan>(jsonAnswer, settings);
-                return plan ?? throw new JsonSerializationException("Не удалось десериализовать план");
-            }
-            catch (JsonSerializationException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return null;
+            return prompt;
         }
 
-        // Собирает с ответом нейросети из вида
-        // "Microsoft.Extensions.AI.AzureAIInferenceChatClient+<CompleteStreamingAsync>d__12"
-        // в вид { json-чик }
         private async Task<string> CollectResponse(IAsyncEnumerable<StreamingChatCompletionUpdate> response)
         {
-            string collectedResponse = "";
+            System.Text.StringBuilder collectedResponse = new();
 
             await foreach (var item in response)
             {
-                collectedResponse += item;
+                collectedResponse.Append(item);
             }
 
-            return collectedResponse;
+            return collectedResponse.ToString();
         }
 
         private string SanitizeJson(string json)
         {
-            // Удаляем возможные Markdown-обертки, ЕСЛИ ПРОМПТА НЕ ХВАТИЛО
+            if (string.IsNullOrWhiteSpace(json))
+                return "{}";
+
+            // Удаляем Markdown обертки если есть
             json = json.Replace("```json", "").Replace("```", "").Trim();
 
-            // Ищем начало и конец Json'а
+            // Ищем начало и конец JSON
             int start = json.IndexOf('{');
             int end = json.LastIndexOf('}') + 1;
 
@@ -137,7 +166,8 @@ namespace ProductProgamming04042025.AI
                 return json[start..end];
             }
 
-            return json;
+            Console.WriteLine($"Некорретный вид Json: {json}");
+            return "{}";
         }
     }
 }

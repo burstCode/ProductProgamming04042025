@@ -82,7 +82,7 @@
                             <div class="message @(message.IsBot ? "bot-answer" : "")">
                                 <div class="content">
                                     <div class="text">
-                                        @message.Text
+                                        @Html.Raw(message.Text)
                                     </div>
                                     @if (message.IsBot && message.Plan != null)
                                     {

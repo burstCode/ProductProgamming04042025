@@ -35,7 +35,7 @@ namespace ProductProgamming04042025.Pages
 
             if (lastAppliedPlan != null)
             {
-                Plan = JsonConvert.DeserializeObject<FitnessPlan>(lastAppliedPlan.ModelResponse);
+                Plan = JsonConvert.DeserializeObject<FitnessPlan>(lastAppliedPlan.ModelResponseJson);
             }
         }
     }

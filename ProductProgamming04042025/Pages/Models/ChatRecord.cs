@@ -17,7 +17,8 @@ namespace ProductProgamming04042025.Pages.Models
         public string UserRequest { get; set; }
 
         public bool IsAnswerReady { get; set; } = false;
-        public string ModelResponse { get; set; } = string.Empty; // JSON строка с планом
+        public string ModelResponseText { get; set; } = string.Empty; // Строка с планом в виде текта
+        public string ModelResponseJson { get; set; } = string.Empty; // JSON строка с планом
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Для отслеживания применения плана

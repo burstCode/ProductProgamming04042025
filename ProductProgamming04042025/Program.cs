@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ProductProgamming04042025.AI;
 using ProductProgamming04042025.Data;
 using ProductProgamming04042025.Pages.Helpers;
 
@@ -9,12 +10,25 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        o => o.CommandTimeout(300) // 300 секунд на подумать
+    ));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddSingleton<Bot>(sp =>
+    new Bot(
+        token: builder.Configuration["AzureAI:ApiKey"],
+        modelName: builder.Configuration["AzureAI:ModelName"]
+    )
+);
+
+builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+builder.Services.AddHostedService<BackgroundTaskService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

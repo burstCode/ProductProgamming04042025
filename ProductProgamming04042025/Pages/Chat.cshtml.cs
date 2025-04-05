@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProductProgamming04042025.AI;
+using ProductProgamming04042025.Pages.Helpers;
+using Newtonsoft.Json;
 
 namespace ProductProgamming04042025.Pages
 {
@@ -13,16 +16,22 @@ namespace ProductProgamming04042025.Pages
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
+        private readonly IBackgroundTaskQueue _taskQueue;
+
         public UserProfile UserProfile { get; set; }
         public List<ChatMessage> Messages { get; set; } = new();
 
         [BindProperty]
         public ChatInputModel Input { get; set; }
 
-        public ChatModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ChatModel(
+            ApplicationDbContext context,
+            UserManager<IdentityUser> userManager,
+            IBackgroundTaskQueue taskQueue)
         {
             _context = context;
             _userManager = userManager;
+            _taskQueue = taskQueue;
         }
 
         public async Task OnGetAsync()
@@ -32,26 +41,46 @@ namespace ProductProgamming04042025.Pages
                 FirstOrDefaultAsync(p => p.UserId == user.Id);
 
             // Загрузка истории сообщений
-            Messages = await _context.ChatRecords
+            List<ChatRecord> records = await _context.ChatRecords
                 .Where(c => c.UserId == user.Id)
                 .OrderBy(c => c.CreatedAt)
-                .Select(c => new ChatMessage
-                {
-                    Text = c.IsAnswerReady ? c.ModelResponse : c.UserRequest,
-                    IsBot = c.IsAnswerReady,
-                    Plan = c.IsAnswerReady ? new PlanPreview { Id = c.Id } : null
-                })
+                .Select(c => c)
                 .ToListAsync();
+
+            foreach (var record in records)
+            {
+                Messages.Add(new ChatMessage
+                {
+                    Text = record.UserRequest,
+                    IsBot = false,
+                    Plan = new PlanPreview
+                    {
+                        Id = record.Id
+                    }
+                });
+                Messages.Add(new ChatMessage
+                {
+                    Text = record.ModelResponseText,
+                    IsBot = true,
+                    Plan = new PlanPreview
+                    {
+                        Id = record.Id
+                    }
+                });
+            }
         }
 
         public async Task<IActionResult> OnPostSendMessageAsync()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
             var user = await _userManager.GetUserAsync(User);
+            UserProfile = await _context.UserProfiles.
+                FirstOrDefaultAsync(p => p.UserId == user.Id);
 
             // Сохраняем запрос пользователя
             var record = new ChatRecord
@@ -59,14 +88,48 @@ namespace ProductProgamming04042025.Pages
                 UserId = user.Id,
                 UserRequest = Input.Message,
                 IsAnswerReady = false,
+                ModelResponseText = string.Empty,
+                ModelResponseJson = string.Empty,
                 CreatedAt = DateTime.UtcNow
             };
 
             _context.ChatRecords.Add(record);
             await _context.SaveChangesAsync();
 
-            // Здесь будет логика отправки запроса к ИИ
-            // и обработка ответа (можно вынести в фоновую службу)
+            // Добавляем задачу в фоновую очередь
+            _taskQueue.Enqueue(async (serviceProvider, cancellationToken) =>
+            {
+                using var scope = serviceProvider.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var bot = scope.ServiceProvider.GetRequiredService<Bot>();
+
+                try
+                {
+                    // Получаем свежую запись из БД
+                    var freshRecord = await dbContext.ChatRecords.FindAsync(record.Id);
+                    if (freshRecord == null) return;
+
+                    // Получаем ответ от ИИ
+                    var botAnswer = await bot.SendRequest(freshRecord.UserRequest, UserProfile);
+
+                    string textResponse = (string)botAnswer[0];
+                    var plan = botAnswer[1];
+
+                    // Обновляем запись
+                    freshRecord.ModelResponseText = textResponse;
+                    freshRecord.ModelResponseJson = JsonConvert.SerializeObject(plan);
+                    freshRecord.IsAnswerReady = true;
+                    freshRecord.AppliedDate = DateTime.UtcNow;
+
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    // Логирование ошибки
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<ChatModel>>();
+                    logger.LogError(ex, "Ошибка при обработке запроса ИИ");
+                }
+            });
 
             return RedirectToPage();
         }
