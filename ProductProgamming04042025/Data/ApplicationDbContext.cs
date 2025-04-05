@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProductProgamming04042025.Pages.Models;
-using System.Reflection.Emit;
 
 namespace ProductProgamming04042025.Data
 {
@@ -9,6 +8,7 @@ namespace ProductProgamming04042025.Data
     {
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<ChatRecord> ChatRecords { get; set; }
+        public DbSet<Article> Articles {get; set;}
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -19,7 +19,7 @@ namespace ProductProgamming04042025.Pages
 
         public FitnessPlan Plan { get; set; }
 
-        // После передачи надо автоматом кидать запрос в чат к нейронке
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         [BindProperty(SupportsGet = true)]
         public string FitnessGoal { get; set; }
 
@@ -46,17 +46,17 @@ namespace ProductProgamming04042025.Pages
             }
             catch (NullReferenceException ex)
             {
-                // В идеале логгировать
+                // пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 return RedirectToPage("/Login");
             }
 
-            // Если первый заход в профиль - перекидываем на первоначальную настройку
+            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (!UserProfile.IsConfiguredFirstTime)
             {
                 return RedirectToPage("/FirstLogin");
             }
 
-            // Получаем последний примененный план
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             var lastAppliedPlan = await _context.ChatRecords
                 .Where(c => c.UserId == user.Id && c.IsApplied)
                 .OrderByDescending(c => c.AppliedDate)

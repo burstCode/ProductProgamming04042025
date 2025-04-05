@@ -1,0 +1,8 @@
+@page "/Articles/Article/{n:int}"
+@model ArticleModel
+@section Styles{
+    <link rel="stylesheet" href="~/css/page.css">
+}
+@section Scripts{}
+
+@Html.Raw(ViewData["Content"])

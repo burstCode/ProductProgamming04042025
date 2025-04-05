@@ -18,7 +18,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddErrorDescriber<RussianIdentityErrorDescriber>();
+
+builder.Services.AddControllersWithViews(options=>{
+    options.Filters.Add<EmailConfirmedFilter>();
+});
 
 builder.Services.AddSingleton<Bot>(sp =>
     new Bot(
@@ -37,7 +42,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {   
-    // Время жизни токена активации
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     options.TokenLifespan = TimeSpan.FromHours(2);
 });
 

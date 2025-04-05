@@ -1,18 +1,11 @@
-﻿@page
-@model ProductProgamming04042025.Pages.EmailConfirmModel
-@{
-    ViewData["Title"] = "Подтверждение email";
-}
-
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/email-confirm.css">
-    <link rel="stylesheet" href="~/css/toast.css">
-    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="./css/email-confirm.css">
+    <link rel="stylesheet" href="./css/toast.css">
+    <title>Document</title>
 </head>
 <body>
     <main>
@@ -22,7 +15,7 @@
             </div>
             <div id="info">
                 <div class="content">
-                    <img src="~/images/at.svg" class="at-image" alt="">
+                    <img src="./images/at.svg" class="at-image" alt="">
                     <div class="data">
                         <div class="small-text">
                             Уже почти готово!
@@ -32,15 +25,14 @@
                         </div>
                         <div class="info-text">
                             Мы выслали вам ссылку для подтверждения <br>
-                            на адрес <span class="bold-text">@Model.Email</span>
+                            на адрес <span class="bold-text">igor.shadrof@mail.ru</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-
-    <script src="~/js/toast.js"></script>
-    <script src="~/js/login.js"></script>
+    <script src="./js/toast.js"></script>
+    <script src="./js/login.js"></script>
 </body>
 </html>

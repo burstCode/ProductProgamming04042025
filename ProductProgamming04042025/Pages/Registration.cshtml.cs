@@ -109,7 +109,23 @@ namespace ProductProgamming04042025.Pages
 
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                switch (error.Code)
+                {
+                    case nameof(IdentityErrorDescriber.DuplicateEmail):
+                    case nameof(IdentityErrorDescriber.DuplicateUserName):
+                        ModelState.AddModelError("Input.Email", error.Description);
+                        break;
+                    case nameof(IdentityErrorDescriber.PasswordTooShort):
+                    case nameof(IdentityErrorDescriber.PasswordRequiresNonAlphanumeric):
+                    case nameof(IdentityErrorDescriber.PasswordRequiresDigit):
+                    case nameof(IdentityErrorDescriber.PasswordRequiresLower):
+                    case nameof(IdentityErrorDescriber.PasswordRequiresUpper):
+                        ModelState.AddModelError("Input.Password", error.Description);
+                        break;
+                    default:
+                        ModelState.AddModelError(string.Empty, error.Description);
+                        break;
+                }
             }
 
             return Page();

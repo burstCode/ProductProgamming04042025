@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/fonts/fontface.css">
-    <link rel="stylesheet" href="~/css/shell.css">
-    <link rel="stylesheet" href="~/css/chat.css">
+    <link rel="stylesheet" href="./fonts/fontface.css">
+    <link rel="stylesheet" href="./css/shell.css">
+    <link rel="stylesheet" href="./css/chat.css">
+    <link rel="stylesheet" href="./css/loader.css">
     <title>МАКЕТ</title>
 </head>
 
@@ -77,7 +78,7 @@
                         <div class="message bot-answer">
                             <div class="content">
                                 <div class="text">
-                                    Вот изменённый план.
+                                    Нейросеть генерирует ответ
                                 </div>
                                 <button class="apply-plan">
                                     <div class="content">
@@ -94,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <form class="user-input">
+                    <form id="chat-form" class="user-input">
                         <input type="text" placeholder="Введите свой запрос...">
                         <button type="submit">
                             <img src="~/images/up.svg" alt="">
@@ -108,7 +109,21 @@
         </section>
     </main>
 
-    <script src="~/js/shell.js"></script>
+    <script src="./js/shell.js"></script>
+    <script src="./js/loader.js"></script>
+    <script>
+        const ba = (document.getElementsByClassName('bot-answer')[0]).firstElementChild;
+        const chat_form = document.getElementById('chat-form');
+        
+        const loader = new Loader(ba);
+        chat_form.onsubmit = (e)=>{
+            e.preventDefault();
+            loader.start();
+            setTimeout((e) => {
+                loader.stop();
+            }, 5000);
+        }
+    </script>
 </body>
 
 </html>
