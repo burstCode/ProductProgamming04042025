@@ -1,19 +1,16 @@
 ﻿@page
-@model IndexModel
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
+@model ProductProgamming04042025.Pages.IndexModel
+@using ProductProgamming04042025.Pages.Models
 
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/fonts/fontface.css">
     <link rel="stylesheet" href="~/css/shell.css">
-    <title>МАКЕТ</title>
+    <link rel="stylesheet" href="~/css/plan.css">
 </head>
-
 <body>
     <main>
         <nav id="shell">
@@ -23,7 +20,7 @@
                         <img src="~/images/burger.svg" alt="">
                     </div>
                     <span class="title">
-                        Учебный процесс
+                        План тренировок
                     </span>
                 </div>
             </div>
@@ -35,11 +32,11 @@
                                 <img src="~/images/avatar.svg" alt="">
                             </div>
                             <div class="user-info">
-                                <span class="status">Студент</span>
+                                <span class="status">Пользователь</span>
                                 <span class="name">@Model.UserProfile.FirstName @Model.UserProfile.LastName</span>
                             </div>
                             <div class="config">
-                                <a asp-page="/Config" class="gear">
+                                <a href="~/config" class="gear">
                                     <img src="~/images/gear.svg" alt="C">
                                 </a>
                             </div>
@@ -47,23 +44,23 @@
                     </div>
                 </div>
                 <div id="shell-navigation">
-                    <a asp-page="/Dashboard" class="nav-item">
+                    <a asp-page="/Chat" class="nav-item">
                         <div class="content">
                             <div class="icon">
                                 <img src="~/images/calendar.svg" alt="">
                             </div>
                             <span class="title">
-                                Главная
+                                Чат
                             </span>
                         </div>
                     </a>
-                    <a asp-page="/Dashboard" class="nav-item selected">
+                    <a asp-page="/Plan" class="nav-item selected">
                         <div class="content">
                             <div class="icon">
-                                <img src="~/images/chart.svg" alt="">
+                                <img src="~/images/dumbbells.svg" alt="">
                             </div>
                             <span class="title">
-                                Учебный процесс
+                                План тренировок
                             </span>
                         </div>
                     </a>
@@ -74,10 +71,93 @@
             </div>
         </nav>
         <section id="content">
-            @await UserManager.GetEmailAsync(await UserManager.GetUserAsync(User))
+            <div class="data">
+                <div class="title">
+                    План тренировок
+                </div>
+                <div id="plan">
+                    <div class="cards">
+                        @foreach (var day in Model.Plan.WeekPlan ?? new Dictionary<int, DayPlan>())
+                        {
+                            <div class="card @(day.Key == (int)DateTime.Today.DayOfWeek ? "selected" : "")">
+                                <div class="content">
+                                    <div class="title">
+                                        @GetDayName(day.Key)
+                                    </div>
+                                    <div class="data">
+                                        <div class="set">
+                                            <div class="items">
+                                                <div class="item">
+                                                    <div class="title">
+                                                        Упражнение
+                                                    </div>
+                                                    <div class="content">
+                                                        Повторения x подходы
+                                                    </div>
+                                                </div>
+                                                @foreach (var exercise in day.Value.Exercises)
+                                                {
+                                                    <div class="item">
+                                                        <div class="title">
+                                                            @exercise.Name
+                                                        </div>
+                                                        <div class="content">
+                                                            @exercise.Count
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="set">
+                                            <div class="items">
+                                                <div class="item">
+                                                    <div class="title">
+                                                        Название блюда
+                                                    </div>
+                                                    <div class="content">
+                                                        Калорийность. Б/Ж/У
+                                                    </div>
+                                                </div>
+                                                @foreach (var meal in day.Value.Diet)
+                                                {
+                                                    <div class="item">
+                                                        <div class="title">
+                                                            @meal.Name
+                                                        </div>
+                                                        <div class="content">
+                                                            @meal.Count
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
     <script src="~/js/shell.js"></script>
 </body>
 </html>
+
+@functions {
+    public string GetDayName(int dayNumber)
+    {
+        return dayNumber switch
+        {
+            0 => "Понедельник",
+            1 => "Вторник",
+            2 => "Среда",
+            3 => "Четверг",
+            4 => "Пятница",
+            5 => "Суббота",
+            6 => "Воскресенье",
+            _ => "День " + dayNumber
+        };
+    }
+}

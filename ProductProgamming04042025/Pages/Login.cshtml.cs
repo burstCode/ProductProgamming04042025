@@ -51,7 +51,7 @@ namespace ProductProgamming04042025.Pages
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToPage("/Dashboard");
+                    return RedirectToPage("/Chat");
                 }
                 // TODO: Можнон добавить переход на страницу, где сказано, что ссылка просрочена
                 // еще и аккаунт снести наху из БД

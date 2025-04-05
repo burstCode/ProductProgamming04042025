@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProductProgamming04042025.Data;
 using ProductProgamming04042025.Pages.Models;
 
@@ -16,7 +17,9 @@ namespace ProductProgamming04042025.Pages
 
         public UserProfile UserProfile { get; set; }
 
+        public FitnessPlan Plan { get; set; }
 
+        // После передачи надо автоматом кидать запрос в чат к нейронке
         [BindProperty(SupportsGet = true)]
         public string FitnessGoal { get; set; }
 
@@ -31,14 +34,40 @@ namespace ProductProgamming04042025.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToPage("/Login");
+            }
 
-            UserProfile = await _context.UserProfiles
-                .FirstOrDefaultAsync(up => up.UserId == user.Id);
+            try
+            {
+                UserProfile = await _context.UserProfiles.
+                FirstOrDefaultAsync(p => p.UserId == user.Id);
+            }
+            catch (NullReferenceException ex)
+            {
+                // В идеале логгировать
+                return RedirectToPage("/Login");
+            }
 
+            // Если первый заход в профиль - перекидываем на первоначальную настройку
             if (!UserProfile.IsConfiguredFirstTime)
             {
                 return RedirectToPage("/FirstLogin");
             }
+
+            // Получаем последний примененный план
+            var lastAppliedPlan = await _context.ChatRecords
+                .Where(c => c.UserId == user.Id && c.IsApplied)
+                .OrderByDescending(c => c.AppliedDate)
+                .FirstOrDefaultAsync();
+
+            if (lastAppliedPlan == null)
+            {
+                return RedirectToPage("/Chat");
+            }
+
+            Plan = JsonConvert.DeserializeObject<FitnessPlan>(lastAppliedPlan.ModelResponseJson);
 
             return Page();
         }
