@@ -22,6 +22,8 @@ namespace ProductProgamming04042025.Pages.Models
         [MaxLength(50)]
         public string LastName { get; set; }
 
+
+
         public int Age { get; set; }
 
         public bool Sex { get; set; }

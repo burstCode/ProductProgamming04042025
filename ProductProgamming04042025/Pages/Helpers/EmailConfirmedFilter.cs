@@ -11,6 +11,7 @@ namespace ProductProgamming04042025.Pages.Helpers
             "/Login",
             "/Registration",
             "/Confidence",
+            "/YandexID",
             "/EmailConfirm",
         };
 
