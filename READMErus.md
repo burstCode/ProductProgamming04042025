@@ -22,7 +22,7 @@ cd ProductProgamming04042025/ProductProgamming04042025
 code appsettings.json
 # Настройте строку подключения
 ```
-Запустите приложение:
+### Запустите приложение:
 ```
 dotnet run
 ```
