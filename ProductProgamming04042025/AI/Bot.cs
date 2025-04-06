@@ -27,6 +27,7 @@ namespace ProductProgamming04042025.AI
                 .AsChatClient(_modelName);
         }
 
+
         public async Task<object[]> SendRequest(string request, UserProfile userProfile)
         {
             string textResponse = string.Empty;

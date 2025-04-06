@@ -3,9 +3,9 @@ window.onload = function () {
         {
             client_id: "03948de1ac304db7a7dfedb458d11fd3",
             response_type: "token",
-            redirect_uri: "https://localhost/YandexID"
+            redirect_uri: "https://192.168.31.188/YandexID"
         },
-        "http://localhost",
+        "http://192.168.31.188",
         {
             view: "button",
             parentId: "buttonContainerId",

@@ -269,6 +269,8 @@ body>main {
     }
     #shell, #menu{
         position: sticky;
+        left: 0;
+        top: 0;
     }
     #menu{
         min-width: 320px;

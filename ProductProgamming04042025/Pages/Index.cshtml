@@ -79,7 +79,7 @@
                     <div class="cards">
                         @foreach (var day in Model.Plan.WeekPlan ?? new Dictionary<int, DayPlan>())
                         {
-                            <div class="card @(day.Key == (int)DateTime.Today.DayOfWeek ? "selected" : "")">
+                            <div class="card @(day.Key == (((int)DateTime.Today.DayOfWeek+6) % 7) ? "selected" : "")">
                                 <div class="content">
                                     <div class="title">
                                         @GetDayName(day.Key)

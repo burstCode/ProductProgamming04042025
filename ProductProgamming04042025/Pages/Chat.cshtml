@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/fonts/fontface.css">
     <link rel="stylesheet" href="~/css/shell.css">
+    <link rel="stylesheet" href="~/css/loader.css">
+    <link rel="stylesheet" href="~/css/toast.css">
     <link rel="stylesheet" href="~/css/chat.css">
 </head>
 <body>
@@ -76,33 +78,14 @@
                     Чат с ботом
                 </div>
                 <div id="chat">
-                    <div class="messages">
-                        @foreach (var message in Model.Messages)
-                        {
-                            <div class="message @(message.IsBot ? "bot-answer" : "")">
-                                <div class="content">
-                                    <div class="text">
-                                        @Html.Raw(message.Text)
-                                    </div>
-                                    @if (message.IsBot && message.Plan != null)
-                                    {
-                                        <form method="post" asp-page-handler="ApplyPlan" class="apply-plan-form">
-                                            <input type="hidden" name="id" value="@message.Plan.Id" />
-                                            <button type="submit"
-                                                    class="apply-plan @(message.Plan.IsApplied ? "applied" : "")"
-                                                    @((message.Plan.IsApplied || !message.IsAnswerReady) ? "disabled" : "")>
-                                                <div class="content">
-                                                    @(message.Plan.IsApplied ? "✓ Активный план" : "Применить план")
-                                                </div>
-                                            </button>
-                                        </form>
-                                    }
-                                </div>
-                            </div>
-                        }
+                    <div class="load-more-cover">
+                        <div class="loadmore">Загрузить больше</div>
                     </div>
-                    <form class="user-input" method="post" asp-page-handler="SendMessage">
-                        <input type="text" name="message" placeholder="Введите свой запрос...">
+                    <div class="messages">
+                        
+                    </div>
+                    <form id="chat-form" class="user-input" method="post" asp-page-handler="SendMessageA">
+                        <input type="text" name="message" placeholder="Скорректируйте план тренировок...">
                         <button type="submit">
                             <img src="~/images/up.svg" alt="">
                         </button>
@@ -116,13 +99,17 @@
     </main>
 
     <script src="~/js/shell.js"></script>
+    <script src="~/js/loader.js"></script>
+    <script src="~/js/toast.js"></script>
+    <script src="~/js/chat.js">
+    </script>
     <script>
         function applyPlan(planId) {
-            fetch(`/api/plan/apply/${planId}`, {
-                method: 'POST'
+            fetch(`/Chat?handler=ApplyPlanA&id=`+planId, {
+                method: 'GET'
             }).then(response => {
                 if (response.ok) {
-                    window.location.href = '/Plan';
+                    window.location.href = '/';
                 }
             });
         }
