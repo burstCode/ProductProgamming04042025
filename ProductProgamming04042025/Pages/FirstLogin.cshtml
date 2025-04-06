@@ -17,7 +17,7 @@
     <main>
         <section id="content">
             <div id="logo">
-                <h1>FitMeAI</h1>
+                <h1>FitAI</h1>
             </div>
             <form id="form" method="post">
                 <div class="attention">
@@ -25,15 +25,15 @@
                 </div>
                 <div class="fieldset-3">
                     <label class="input">
-                        <span>Возраст</span>
+                        <span>Возраст, годы</span>
                         <input type="text" asp-for="NewFields.Age" id="age" placeholder="Ваш возраст" autocomplete="off" required>
                     </label>
                     <label class="input">
-                        <span>Рост</span>
+                        <span>Рост, см</span>
                         <input type="text" asp-for="NewFields.Height" id="height" placeholder="Ваш рост" autocomplete="off" required>
                     </label>
                     <label class="input">
-                        <span>Вес</span>
+                        <span>Вес, кг</span>
                         <input type="text" asp-for="NewFields.Weight" id="weight" placeholder="Ваш вес" autocomplete="off" required>
                     </label>
                 </div>
@@ -80,6 +80,7 @@
         </section>
     </main>
     <script src="~/js/toast.js"></script>
+    <script src="~/js/first-login.js"></script>
     <script src="~/js/login.js"></script>
 </body>
 </html>

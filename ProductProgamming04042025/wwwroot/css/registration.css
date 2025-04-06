@@ -10,6 +10,9 @@ main{
 }
 
 @media (max-width: 656px) {
+    main{
+        margin-top: 60px;
+    }       
     #content {
         height: auto;
         padding-top: 57px;

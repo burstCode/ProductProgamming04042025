@@ -1,8 +1,8 @@
 @import url(../fonts/fontface.css);
 
 :root {
-    --light-blue: #DEE6E7;
-    --blue: #D4DCE3;
+    --light-blue: #F9E2FF;
+    --blue: #E5BCEA;
     --light-red: #E7DEDE;
 
     --light-blue-text: #A0AFBD;
@@ -59,7 +59,7 @@ label.input>input {
     padding: 20px;
     appearance: none;
     border: none;
-    background-color: #DEE6E7;
+    background-color: var(--light-blue);
     border-radius: 10px;
     -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
     -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
@@ -71,7 +71,7 @@ label.input>.text-danger{
 }
 label.input>input.input-validation-error,
 label.input>input.error {
-    background-color: #E7DEDE;
+    background-color: var(--light-red);
     -webkit-box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.25);
     -moz-box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.25);
     box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.25);

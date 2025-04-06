@@ -18,7 +18,7 @@
     padding: 40px;
 }
 #plan>.cards>.card.selected {
-    background-color: #DEE6E7;
+    background-color: var(--light-blue);
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.5);
 }
 #plan>.cards>.card>.content>.title {
@@ -42,7 +42,8 @@
 }
 
 #plan>.cards>.card>.content>.data>.set>.items>.item:first-child {
-    color: var(--light-blue-text);
+    color: black;
+    font-weight: 500;
 }
 
 @media (max-width: 460px) {

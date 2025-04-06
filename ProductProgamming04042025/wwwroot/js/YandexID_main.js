@@ -10,7 +10,8 @@ window.onload = function () {
             view: "button",
             parentId: "buttonContainerId",
             buttonSize: 'l',
-            buttonView: 'main',
+
+            buttonView: 'additional',
             buttonTheme: 'light',
             buttonBorderRadius: "0",
             buttonIcon: 'ya',
