@@ -65,6 +65,8 @@ namespace ProductProgamming04042025.Pages
             var user = await _userManager.GetUserAsync(User);
 
             var record = await _context.ChatRecords.FindAsync(id);
+
+
             if (user == null || record == null || record.UserId != user.Id)
             {
                 var er = new
@@ -73,6 +75,25 @@ namespace ProductProgamming04042025.Pages
                     Error = "1"
                 };
                 return new JsonResult(er);
+            }
+            if (record.CreatedAt.Subtract(DateTime.Now) > new TimeSpan(0, 1, 0))
+            {
+                Console.WriteLine("record");
+                var freshRecord = await _context.ChatRecords.FindAsync(record.Id);
+
+                if (freshRecord == null)
+                {
+                    var err = new
+                    {
+                        Error = "Unknown record"
+                    };
+                    return new JsonResult(err);
+                }
+
+
+                freshRecord.IsAnswerReady = true;
+                freshRecord.ModelResponseText = "К сожалению, не удалось сгенерировать план, повторите запрос";
+                await _context.SaveChangesAsync();
             }
             var e = new
             {
@@ -101,27 +122,7 @@ namespace ProductProgamming04042025.Pages
                 .OrderBy(c => c.CreatedAt) // Доп. сортировка (если нужен исходный порядок)
                 .ToListAsync();
 
-            var last_record = records[records.Count - 1];
-
-            if (last_record.CreatedAt.Subtract(DateTime.Now) > new TimeSpan(0, 1, 0))
-            {
-                Console.WriteLine("record");
-                var freshRecord = await _context.ChatRecords.FindAsync(last_record.Id);
-
-                if (freshRecord == null)
-                {
-                    var e = new
-                    {
-                        Error = "Unknown record"
-                    };
-                    return new JsonResult(e);
-                }
-
-
-                freshRecord.IsAnswerReady = true;
-                freshRecord.ModelResponseText = "К сожалению, не удалось сгенерировать план, повторите запрос";
-                await _context.SaveChangesAsync();
-            }
+            
 
             return new JsonResult(records);
         }
