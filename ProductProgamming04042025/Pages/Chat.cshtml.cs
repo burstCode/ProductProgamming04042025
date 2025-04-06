@@ -204,6 +204,15 @@ namespace ProductProgamming04042025.Pages
                     // Логирование ошибки
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<ChatModel>>();
                     logger.LogError(ex, "Ошибка при обработке запроса ИИ");
+// Получаем свежую запись из БД
+                    var freshRecord = await dbContext.ChatRecords.FindAsync(record.Id);
+                    if (freshRecord == null) return;
+
+
+                    freshRecord.IsAnswerReady = true;
+                    freshRecord.ModelResponseText = "К сожалению, во время генерации возникла ошибка";
+                    await dbContext.SaveChangesAsync();
+
                 }
             });
 
