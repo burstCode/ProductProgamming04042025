@@ -79,9 +79,8 @@ namespace ProductProgamming04042025.Pages
             if (record.CreatedAt.Subtract(DateTime.Now) > new TimeSpan(0, 1, 0))
             {
                 Console.WriteLine("record");
-                var freshRecord = await _context.ChatRecords.FindAsync(record.Id);
 
-                if (freshRecord == null)
+                if (record == null)
                 {
                     var err = new
                     {
@@ -91,9 +90,15 @@ namespace ProductProgamming04042025.Pages
                 }
 
 
-                freshRecord.IsAnswerReady = true;
-                freshRecord.ModelResponseText = "К сожалению, не удалось сгенерировать план, повторите запрос";
+                record.IsAnswerReady = true;
+                record.ModelResponseText = "К сожалению, не удалось сгенерировать план, повторите запрос";
                 await _context.SaveChangesAsync();
+                var o = new
+                {
+                    IsReady = record.IsAnswerReady,
+                    Response = record.ModelResponseText
+                };
+                return new JsonResult(o);
             }
             var e = new
             {
@@ -122,7 +127,7 @@ namespace ProductProgamming04042025.Pages
                 .OrderBy(c => c.CreatedAt) // Доп. сортировка (если нужен исходный порядок)
                 .ToListAsync();
 
-            
+
 
             return new JsonResult(records);
         }
