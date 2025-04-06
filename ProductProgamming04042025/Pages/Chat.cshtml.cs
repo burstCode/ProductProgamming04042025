@@ -37,11 +37,14 @@ namespace ProductProgamming04042025.Pages
             _taskQueue = taskQueue;
         }
 
-        public async Task<IActionResult> OnGetChatRecordWidthTimeAsync(DateTime time){
+        public async Task<IActionResult> OnGetChatRecordWidthTimeAsync(DateTime time)
+        {
             var user = await _userManager.GetUserAsync(User);
-            
-            if(user == null){
-                var e = new {
+
+            if (user == null)
+            {
+                var e = new
+                {
                     Error = "Uncnown user"
                 };
                 return new JsonResult(e);
@@ -57,29 +60,36 @@ namespace ProductProgamming04042025.Pages
 
             return new JsonResult(records);
         }
-        public async Task<IActionResult> OnGetIsReadyAsync(int id){
+        public async Task<IActionResult> OnGetIsReadyAsync(int id)
+        {
             var user = await _userManager.GetUserAsync(User);
 
             var record = await _context.ChatRecords.FindAsync(id);
-            if(user == null || record == null || record.UserId != user.Id){
-                var er = new {
+            if (user == null || record == null || record.UserId != user.Id)
+            {
+                var er = new
+                {
                     IsReady = false,
                     Error = "1"
                 };
                 return new JsonResult(er);
             }
-            var e = new{
+            var e = new
+            {
                 IsReady = record.IsAnswerReady,
                 Response = record.ModelResponseText
             };
             return new JsonResult(e);
         }
-        public async Task<IActionResult> OnGetChatRecordAsync(){
+        public async Task<IActionResult> OnGetChatRecordAsync()
+        {
             var user = await _userManager.GetUserAsync(User);
-            
-            if(user == null){
-                var e = new {
-                    Error = "Uncnown user"
+
+            if (user == null)
+            {
+                var e = new
+                {
+                    Error = "Unknown user"
                 };
                 return new JsonResult(e);
             }
@@ -91,6 +101,27 @@ namespace ProductProgamming04042025.Pages
                 .OrderBy(c => c.CreatedAt) // Доп. сортировка (если нужен исходный порядок)
                 .ToListAsync();
 
+            var last_record = records[records.Count - 1];
+
+            if (last_record.CreatedAt.Subtract(DateTime.Now) > new TimeSpan(0, 1, 0))
+            {
+                Console.WriteLine("record");
+                var freshRecord = await _context.ChatRecords.FindAsync(last_record.Id);
+
+                if (freshRecord == null)
+                {
+                    var e = new
+                    {
+                        Error = "Unknown record"
+                    };
+                    return new JsonResult(e);
+                }
+
+
+                freshRecord.IsAnswerReady = true;
+                freshRecord.ModelResponseText = "К сожалению, не удалось сгенерировать план, повторите запрос";
+                await _context.SaveChangesAsync();
+            }
 
             return new JsonResult(records);
         }
@@ -100,7 +131,7 @@ namespace ProductProgamming04042025.Pages
             UserProfile = await _context.UserProfiles
                 .FirstOrDefaultAsync(p => p.UserId == user.Id);
 
-            if ( FitnessGoal != null )
+            if (FitnessGoal != null)
             {
                 // Если перешли с фитнес-целью, автоматически отправляем запрос
                 Input = new ChatInputModel { Message = FitnessGoal };
@@ -142,7 +173,8 @@ namespace ProductProgamming04042025.Pages
         }
 
         public async Task<IActionResult> OnPostSendMessageAAsync(
-    [FromForm] string message){
+    [FromForm] string message)
+        {
             var user = await _userManager.GetUserAsync(User);
             UserProfile = await _context.UserProfiles.
                 FirstOrDefaultAsync(p => p.UserId == user.Id);
@@ -152,8 +184,10 @@ namespace ProductProgamming04042025.Pages
                 .OrderByDescending(cr => cr.CreatedAt)  // Сортируем по дате создания (новые сначала)
                 .FirstOrDefaultAsync();  // Берем первую (самую новую)
 
-            if(latestRecord == null || !latestRecord.IsAnswerReady){
-                return new JsonResult(new {
+            if (latestRecord == null || !latestRecord.IsAnswerReady)
+            {
+                return new JsonResult(new
+                {
                     Error = true
                 });
             }
@@ -204,7 +238,7 @@ namespace ProductProgamming04042025.Pages
                     // Логирование ошибки
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<ChatModel>>();
                     logger.LogError(ex, "Ошибка при обработке запроса ИИ");
-// Получаем свежую запись из БД
+                    // Получаем свежую запись из БД
                     var freshRecord = await dbContext.ChatRecords.FindAsync(record.Id);
                     if (freshRecord == null) return;
 
@@ -276,7 +310,7 @@ namespace ProductProgamming04042025.Pages
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnGetApplyPlanAAsync( int id)
+        public async Task<IActionResult> OnGetApplyPlanAAsync(int id)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -298,7 +332,8 @@ namespace ProductProgamming04042025.Pages
             newPlan.AppliedDate = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            return new JsonResult(new {
+            return new JsonResult(new
+            {
                 Ok = 1
             });
         }
