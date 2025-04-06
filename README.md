@@ -1,4 +1,4 @@
-# FitAI - Продуктовое программирование 04.04.2025
+# FitAI - Product Programming 04.04.2025
 ---
 ## Navigation
 ----
