@@ -76,7 +76,7 @@ namespace ProductProgamming04042025.Pages
                 };
                 return new JsonResult(er);
             }
-            if (record.CreatedAt.Subtract(DateTime.Now) > new TimeSpan(0, 1, 0))
+            if (DateTime.Now.Subtract(record.CreatedAt) > new TimeSpan(0, 1, 0))
             {
                 Console.WriteLine("record");
 
